@@ -1,3 +1,7 @@
+<div align="center">
+<img src="assets/img/log_lens_logo_v1.webp" alt="The Awesome Log lens Logo goes here" width="250">
+</div>
+
 # Log Lens 🔍
 
  # **Under Develoment** 
