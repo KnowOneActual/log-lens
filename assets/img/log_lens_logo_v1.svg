@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="180" height="180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" id="svg-light">
+                        <!-- Background Circle (Optional container) -->
+                        <circle cx="100" cy="100" r="90" fill="white" fill-opacity="0.0"/>
+
+                        <!-- The Handle/Tail of the Lens -->
+                        <path d="M135 135L160 160" stroke="#3B82F6" stroke-width="16" stroke-linecap="round"/>
+
+                        <!-- The Lens Circle -->
+                        <circle cx="95" cy="95" r="55" stroke="#1E293B" stroke-width="12"/>
+
+                        <!-- The "Log Lines" inside the lens -->
+                        <rect x="65" y="75" width="60" height="8" rx="4" fill="#3B82F6"/>
+                        <rect x="65" y="95" width="40" height="8" rx="4" fill="#94A3B8"/>
+                        <rect x="65" y="115" width="50" height="8" rx="4" fill="#94A3B8"/>
+                    </svg>
