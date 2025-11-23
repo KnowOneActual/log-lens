@@ -3,23 +3,28 @@ from collections import Counter
 
 class LogParser:
     def __init__(self):
-        # Counter is a specialized dictionary that defaults to 0
         self.log_counts = Counter()
-        # Regex to find uppercase log levels (e.g., INFO, WARN)
+        self.ip_counts = Counter()  # New counter for IPs
+        
+        # Regex for standard log levels
         self.level_pattern = re.compile(r"(INFO|WARN|WARNING|ERROR|CRITICAL|DEBUG)")
+        
+        # Regex for IPv4 addresses (Simple version)
+        self.ip_pattern = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
 
     def parse_line(self, line):
-        """
-        Scans a single line for log levels and updates the counter.
-        """
-        match = self.level_pattern.search(line)
-        if match:
-            # extracting the level found (e.g., "ERROR")
-            level = match.group(1)
-            self.log_counts[level] += 1
+        # 1. Check for Log Level
+        match_level = self.level_pattern.search(line)
+        if match_level:
+            self.log_counts[match_level.group(1)] += 1
+
+        # 2. Check for IP Address
+        match_ip = self.ip_pattern.search(line)
+        if match_ip:
+            self.ip_counts[match_ip.group(0)] += 1
 
     def get_report(self):
-        """
-        Returns the dictionary of counts.
-        """
-        return dict(self.log_counts)
+        return {
+            "levels": dict(self.log_counts),
+            "ips": dict(self.ip_counts)
+        }
