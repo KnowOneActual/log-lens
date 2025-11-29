@@ -5,14 +5,18 @@ build-backend = "hatchling.build"
 [project]
 name = "log-lens"
 version = "0.4.0"
+<<<<<<< HEAD
 description = "Lightweight CLI for analyzing server log files"
+=======
+description = "Lightweight CLI for analyzing Apache/Nginx server logs"
+>>>>>>> 29938c7e03cdb5b8d10435336fa8d7fb880ec337
 readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
 authors = [
   {name = "KnowOneActual", email = "your-email@example.com"},
 ]
-keywords = ["logs", "analysis", "cli", "server"]
+keywords = ["logs", "analysis", "cli", "server", "apache", "nginx"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
