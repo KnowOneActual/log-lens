@@ -1,4 +1,11 @@
+<div align="center">
+<img src="assets/img/log_lens_logo_v1.webp" alt="The Awesome Log lens Logo goes here" width="250">
+
+
 # Log Lens 🔍
+
+ # **Under development and refactoring might have some hiccups along the way, so it may not work perfectly every time. Thanks for understanding! ** 
+</div>
 
 [![PyPI version](https://badge.fury.io/py/log-lens.svg)](https://pypi.org/project/log-lens/)
 [![Tests](https://github.com/KnowOneActual/log-lens/actions/workflows/ci.yml/badge.svg)](https://github.com/KnowOneActual/log-lens/actions)
