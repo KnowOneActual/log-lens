@@ -33,6 +33,9 @@ dev = [
 [project.scripts]
 log-lens = "log_lens.cli:main"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/log_lens"]
+
 [project.urls]
 Homepage = "https://github.com/KnowOneActual/log-lens"
 Repository = "https://github.com/KnowOneActual/log-lens"
