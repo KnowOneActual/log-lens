@@ -11,14 +11,18 @@
 [![Tests](https://github.com/KnowOneActual/log-lens/actions/workflows/ci.yml/badge.svg)](https://github.com/KnowOneActual/log-lens/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+### 🚀 Now available on PyPI!
+You can now install `mailops` globally with a single command.
+
+
 **Lightweight CLI for analyzing Apache/Nginx server logs.** Auto-detects format, extracts status codes, top IPs/paths, HTTP methods, and exports JSON.
 
 ## 🚀 Features
 
 - **Auto log format detection** (Apache, generic logs)
 - **Status codes** (200, 404, 500 analysis)
-- **Top IPs, paths, & methods** with beautiful tables
-- **Rich CLI** with colors & professional formatting
+- **Top IPs, paths, & methods** with tables
+- **Rich CLI** with colors & formatting
 - **JSON export** for dashboards/tools
 - **Production ready** (tests, linting, CI)
 
