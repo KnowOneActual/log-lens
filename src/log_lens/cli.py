@@ -89,7 +89,8 @@ def main():
     
     rprint(f"[bold green]✅ Analyzed[/bold green] {args.logfile}: {line_count} lines")
     
-    total_entries = sum(report.get('levels', {}).values()) + sum(report.get('status_codes', {}).values())
+    # FIXED: Use 'result' not 'report'
+    total_entries = sum(result.get('levels', {}).values()) + sum(result.get('status_codes', {}).values())
     rprint(f"[bold blue]📊 Found[/bold blue] {total_entries} entries")
     
     print_report(result)
