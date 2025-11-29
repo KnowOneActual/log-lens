@@ -26,11 +26,11 @@ def print_report(report: dict):
             levels_table.add_row(level, str(count))
         console.print(levels_table)
     
-    # Top IPs Table
+    # Top IPs Table (FIXED)
     if report["ips"]:
         ips_table = Table(title="Top IPs")
         ips_table.add_column("IP", style="green")
-        ips_table.add_row("Count", justify="right", style="yellow")
+        ips_table.add_column("Count", justify="right", style="yellow")
         
         for ip, count in sorted(report["ips"].items(), key=lambda x: x[1], reverse=True)[:10]:
             ips_table.add_row(ip, str(count))
