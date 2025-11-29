@@ -1,36 +1,65 @@
-# Contributing
+# Contributing to Log Lens 🔍
 
-First off, thanks for taking the time to contribute! 🚀
+Thank you for considering contributing! Contributions welcome! 🎉
 
-We welcome contributions from the community to help improve this project.
+## 🎯 Development Workflow
 
-## How to Contribute
+1. **Fork & clone**
+```bash
+git clone https://github.com/YOUR_USERNAME/log-lens.git
+cd log-lens
+pip install -e '.[dev]'
+```
 
-### Reporting Bugs
-If you find a bug or unexpected behavior, please open an issue on GitHub.
-* Check if the issue already exists.
-* Provide as much detail as possible (OS, version, steps to reproduce).
+2. **Install pre-commit hooks** (auto-formatting)
+```bash
+pre-commit install
+```
 
-### Requesting Features
-Have an idea for a new feature or improvement?
-* Open a Feature Request ticket.
-* Describe *why* this feature would be useful.
+3. **Make your changes + tests**
+```bash
+# Your changes here...
+pre-commit run --all-files  # Auto-format
+pytest tests/               # Tests pass
+log-lens sample_access.log  # CLI works
+```
 
-### Submitting Changes (Pull Requests)
+4. **Commit & push**
+```bash
+git add .
+git commit -m "feat: add nginx parser"
+git push origin your-branch
+```
 
-1.  **Fork the Repo**: Click the "Fork" button in the top right corner.
-2.  **Clone your Fork**:
-    ```bash
-    git clone [https://github.com/YOUR-USERNAME/YOUR-PROJECT.git](https://github.com/YOUR-USERNAME/YOUR-PROJECT.git)
-    ```
-3.  **Create a Branch**:
-    ```bash
-    git checkout -b my-new-feature
-    ```
-4.  **Make your Changes**: Edit the code and save.
-5.  **Test Your Changes**: Ensure everything runs as expected.
-6.  **Push and PR**: Push your branch to your fork and open a Pull Request against the `main` branch.
+5. **Open Pull Request** → Auto-tested by CI!
 
-## License
+## 🤝 Contribution Guidelines
 
-By contributing, you agree that your contributions will be licensed under the project's license.
+- **Small PRs** (<200 lines) preferred
+- **Tests required** for new features
+- **Follow Black formatting** (pre-commit auto-fixes)
+- **Update CHANGELOG.md** for user-facing changes
+- **Link issues** with `fixes #123`
+
+## 🧪 Testing
+
+```bash
+pytest tests/ --cov=log_lens  # Run + coverage
+log-lens sample_access.log    # Manual test
+```
+
+## 📋 Commit Message Format
+
+```bash
+feat: add nginx log parser
+fix: handle missing status codes
+docs: update apache examples
+style: fix black formatting
+```
+
+## 🤔 Questions?
+
+- Open an [issue](https://github.com/KnowOneActual/log-lens/issues/new)
+- Join [Discord](link-when-created)
+
+**Happy contributing!** 🙌
