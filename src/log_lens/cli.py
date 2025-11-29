@@ -3,8 +3,9 @@
 
 import argparse
 import sys
+import json
 from pathlib import Path
-from log_lens.parser import parse_log_file
+from log_lens.parser import LogParser
 
 
 def main():
@@ -18,12 +19,18 @@ def main():
         print(f"Error: {args.logfile} not found", file=sys.stderr)
         sys.exit(1)
     
-    # Parse and print results (placeholder for now)
-    result = parse_log_file(args.logfile)
-    print(f"Analyzed {args.logfile}: {len(result)} lines")
+    # Use REAL LogParser class
+    log_parser = LogParser()
+    
+    with open(args.logfile, 'r') as f:
+        for line in f:
+            log_parser.parse_line(line.strip())
+    
+    result = log_parser.get_report()
+    print(f"Analyzed {args.logfile}: {sum(result['levels'].values())} log entries")
+    print(f"Top IP: {max(result['ips'], key=result['ips'].get) if result['ips'] else 'None'}")
     
     if args.export:
-        import json
         Path(args.export).write_text(json.dumps(result, indent=2))
         print(f"Exported to {args.export}")
 
