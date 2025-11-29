@@ -1,22 +1,30 @@
-"""Log Lens parser module."""
+import re
+from collections import Counter
 
-from typing import Dict, Any
-from pathlib import Path
+class LogParser:
+    def __init__(self):
+        self.log_counts = Counter()
+        self.ip_counts = Counter()  # New counter for IPs
+        
+        # Regex for standard log levels
+        self.level_pattern = re.compile(r"(INFO|WARN|WARNING|ERROR|CRITICAL|DEBUG)")
+        
+        # Regex for IPv4 addresses (Simple version)
+        self.ip_pattern = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
 
+    def parse_line(self, line):
+        # 1. Check for Log Level
+        match_level = self.level_pattern.search(line)
+        if match_level:
+            self.log_counts[match_level.group(1)] += 1
 
-def parse_log_file(logfile: str | Path) -> Dict[str, Any]:
-    """Parse a log file and return structured results."""
-    
-    path = Path(logfile)
-    if not path.exists():
-        raise FileNotFoundError(f"Log file not found: {logfile}")
-    
-    # Stub: return basic line count for now
-    line_count = sum(1 for _ in path.open())
-    
-    return {
-        "total_lines": line_count,
-        "log_levels": {"INFO": 0, "WARN": 0, "ERROR": 0, "DEBUG": 0},
-        "top_ips": [],
-        "summary": f"Parsed {line_count} lines from {logfile}"
-    }
+        # 2. Check for IP Address
+        match_ip = self.ip_pattern.search(line)
+        if match_ip:
+            self.ip_counts[match_ip.group(0)] += 1
+
+    def get_report(self):
+        return {
+            "levels": dict(self.log_counts),
+            "ips": dict(self.ip_counts)
+        }

@@ -4,7 +4,7 @@
 
 # Log Lens 🔍
 
- # **Under Develoment** 
+ # **Under development and refactoring might have some hiccups along the way, so it may not work perfectly every time. Thanks for understanding! ** 
 
 **Log Lens** is a lightweight, robust command-line tool for analyzing server log files. It parses raw log data to extract key metrics, identify error patterns, and track IP address activity.
 
