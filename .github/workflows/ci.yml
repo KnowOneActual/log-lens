@@ -1,15 +1,12 @@
 name: CI
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
+on: [push, pull_request]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run a one-line script
-        run: echo "Replace this with your actual build/test commands!"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -e .[dev] pre-commit
+      - run: pre-commit run --all-files
+      - run: pytest tests/
