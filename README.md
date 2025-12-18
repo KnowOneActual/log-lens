@@ -105,7 +105,7 @@ pre-commit run --all-files
 
 ## 📈 Roadmap
 
-See [ROADMAP.md](ROADMAP.md)
+See [ROADMAP.md](docs/roadmap.md)
 
 ---
 
