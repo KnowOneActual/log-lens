@@ -15,7 +15,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-packages = [{include = "log_lens", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -47,7 +46,6 @@ target-version = ['py38']
 [tool.isort]
 profile = "black"
 line_length = 100
-src_paths = ["src", "tests"]
 
 [tool.mypy]
 python_version = "3.8"
