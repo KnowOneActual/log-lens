@@ -1,50 +1,42 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project]
+[tool.poetry]
 name = "log-lens"
 version = "0.4.0"
 description = "Lightweight CLI for analyzing Apache/Nginx server logs"
-readme = "README.md"
-requires-python = ">=3.8"
-license = {file = "LICENSE"}
 authors = [{name = "KnowOneActual", email = "your-email@example.com"}]
+readme = "README.md"
+license = "MIT"
 keywords = ["logs", "analysis", "cli", "server", "apache", "nginx"]
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = [
-    "rich>=13.0.0",
-    "click>=8.0.0",
-    "pyyaml>=6.0",
-]
 
-[project.optional-dependencies]
-dev = [
-    "black",
-    "isort",
-    "mypy",
-    "pytest",
-    "pytest-cov",
-    "ruff",
-    "pre-commit",
-]
+[tool.poetry.dependencies]
+python = "^3.8"
+rich = ">=13.0.0"
+click = ">=8.0.0"
+pyyaml = ">=6.0"
 
-[project.scripts]
+[tool.poetry.group.dev.dependencies]
+black = "^24.0.0"
+isort = "^5.13.0"
+mypy = "^1.8.0"
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+ruff = "^0.2.0"
+pre-commit = "^3.6.0"
+
+[tool.poetry.scripts]
 log-lens = "log_lens.cli:main"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/log_lens"]
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "/src",
-    "/tests",
-    "/docs",
-]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
@@ -67,7 +59,5 @@ markers = [
     "integration: mark test as an integration test",
 ]
 
-[project.urls]
-Homepage = "https://github.com/KnowOneActual/log-lens"
-Repository = "https://github.com/KnowOneActual/log-lens"
-Changelog = "https://github.com/KnowOneActual/log-lens/blob/main/CHANGELOG.md"
+[tool.poetry-version-plugin]
+lines = 4
