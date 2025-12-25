@@ -15,6 +15,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+packages = [{include = "log_lens", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -30,6 +31,7 @@ pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 ruff = "^0.2.0"
 pre-commit = "^3.6.0"
+pylint = "^3.0.0"
 
 [tool.poetry.scripts]
 log-lens = "log_lens.cli:main"
@@ -45,6 +47,7 @@ target-version = ['py38']
 [tool.isort]
 profile = "black"
 line_length = 100
+src_paths = ["src", "tests"]
 
 [tool.mypy]
 python_version = "3.8"
@@ -54,10 +57,11 @@ disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--strict-markers"
+addopts = "--strict-markers -v"
 markers = [
     "integration: mark test as an integration test",
 ]
 
-[tool.poetry-version-plugin]
-lines = 4
+[tool.ruff]
+line-length = 100
+target-version = "py38"
