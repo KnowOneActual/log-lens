@@ -28,14 +28,14 @@ class ApacheParser:
         r'(?P<status>\d{3}) (?P<size>\d+|-) "[^"]*" "(?P<user_agent>[^"]*)"'
     )
 
-    def __init__(self):
-        self.entries = Counter()
-        self.ips = Counter()
-        self.status_codes = Counter()
-        self.paths = Counter()
-        self.methods = Counter()
+    def __init__(self) -> None:
+        self.entries: Counter[str] = Counter()
+        self.ips: Counter[str] = Counter()
+        self.status_codes: Counter[int] = Counter()
+        self.paths: Counter[str] = Counter()
+        self.methods: Counter[str] = Counter()
 
-    def parse_line(self, line: str):
+    def parse_line(self, line: str) -> None:
         match = self.APACHE_PATTERN.search(line)
         if match:
             data = match.groupdict()
@@ -64,13 +64,13 @@ class ApacheParser:
 class LogParser:
     """Main parser with format auto-detection."""
 
-    def __init__(self):
-        self.log_counts = Counter()
-        self.ip_counts = Counter()
+    def __init__(self) -> None:
+        self.log_counts: Counter[str] = Counter()
+        self.ip_counts: Counter[str] = Counter()
         self.format = "unknown"
-        self.parser = None
+        self.parser: Optional[ApacheParser] = None
 
-    def parse_line(self, line: str):
+    def parse_line(self, line: str) -> None:
         # Backward compatibility + new Apache parsing
         # Try log levels (old behavior)
         level_match = re.search(r"(INFO|WARN|WARNING|ERROR|CRITICAL|DEBUG)", line)
@@ -89,7 +89,7 @@ class LogParser:
             self.parser = apache_parser
 
     def get_report(self) -> Dict[str, Any]:
-        if self.parser:
+        if self.parser is not None:
             return self.parser.get_report()
         return {
             "format": self.format,
