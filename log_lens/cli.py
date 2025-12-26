@@ -7,11 +7,10 @@ import sys
 from pathlib import Path
 from typing import Optional, Sequence
 
+from log_lens.parser import LogParser
 from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
-
-from log_lens.parser import LogParser
 
 console = Console()
 
@@ -28,9 +27,7 @@ def print_report(report: dict) -> None:
         levels_table = Table(title="Log Levels")
         levels_table.add_column("Level", style="cyan")
         levels_table.add_column("Count", justify="right", style="magenta")
-        for level, count in sorted(
-            report["levels"].items(), key=lambda x: x[1], reverse=True
-        ):
+        for level, count in sorted(report["levels"].items(), key=lambda x: x[1], reverse=True):
             levels_table.add_row(level, str(count))
         console.print(levels_table)
 
@@ -38,9 +35,7 @@ def print_report(report: dict) -> None:
         status_table = Table(title="Status Codes")
         status_table.add_column("Code", style="cyan")
         status_table.add_column("Count", justify="right", style="magenta")
-        for code, count in sorted(
-            report["status_codes"].items(), key=lambda x: x[1], reverse=True
-        ):
+        for code, count in sorted(report["status_codes"].items(), key=lambda x: x[1], reverse=True):
             status_table.add_row(str(code), str(count))
         console.print(status_table)
 
@@ -49,9 +44,7 @@ def print_report(report: dict) -> None:
         ips_table = Table(title="Top IPs")
         ips_table.add_column("IP", style="green")
         ips_table.add_column("Count", justify="right", style="yellow")
-        for ip, count in sorted(
-            report["ips"].items(), key=lambda x: x[1], reverse=True
-        )[:10]:
+        for ip, count in sorted(report["ips"].items(), key=lambda x: x[1], reverse=True)[:10]:
             ips_table.add_row(ip, str(count))
         console.print(ips_table)
 
@@ -69,9 +62,7 @@ def print_report(report: dict) -> None:
         methods_table = Table(title="HTTP Methods")
         methods_table.add_column("Method", style="bold magenta")
         methods_table.add_column("Count", justify="right", style="green")
-        for method, count in sorted(
-            report["methods"].items(), key=lambda x: x[1], reverse=True
-        ):
+        for method, count in sorted(report["methods"].items(), key=lambda x: x[1], reverse=True):
             methods_table.add_row(method, str(count))
         console.print(methods_table)
 
