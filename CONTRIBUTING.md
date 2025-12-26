@@ -1,6 +1,6 @@
 # Contributing to Log Lens 🔍
 
-Thank you for considering contributing! We welcome contributions of all kinds. 🌟
+Thank you for considering contributing! We welcome contributions of all kinds.  🌟
 
 ---
 
