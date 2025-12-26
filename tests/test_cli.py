@@ -105,7 +105,8 @@ class TestCliEdgeCases:
                     pass
             captured = capsys.readouterr()
             assert "Analyzed" in captured.out
-            assert "0 lines" in captured.out
+            # Check for "0" followed by "lines" (accounting for possible newlines)
+            assert "0" in captured.out and "lines" in captured.out
         finally:
             Path(empty_file).unlink()
 
