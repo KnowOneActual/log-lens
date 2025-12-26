@@ -7,9 +7,9 @@ repos:
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
-      - id: isort
-        exclude: ^src/
-        args: ["--settings-path=pyproject.toml"]
+       - id: isort
+         exclude: ^src/
+         args: ["--settings-path=pyproject.toml"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.6.1
     hooks:
