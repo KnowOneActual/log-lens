@@ -18,7 +18,7 @@ console = Console()
 def print_report(report: dict) -> None:
     """Pretty print ALL analysis results."""
 
-    # Format detection
+    # Format detection 
     fmt = report.get("format", "unknown")
     rprint(f"[bold magenta]📋 Format:[/bold magenta] {fmt.upper()}")
 
