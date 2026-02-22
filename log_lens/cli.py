@@ -7,10 +7,11 @@ import sys
 from pathlib import Path
 from typing import Optional, Sequence
 
-from log_lens.parser import LogParser
 from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
+
+from log_lens.parser import LogParser
 
 console = Console()
 
@@ -18,7 +19,7 @@ console = Console()
 def print_report(report: dict) -> None:
     """Pretty print ALL analysis results."""
 
-    # Format detection 
+    # Format detection
     fmt = report.get("format", "unknown")
     rprint(f"[bold magenta]📋 Format:[/bold magenta] {fmt.upper()}")
 
