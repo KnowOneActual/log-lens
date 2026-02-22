@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Log Lens CLI - Phase 3 with web metrics."""
 
-import argparse
 import json
-import sys
 from pathlib import Path
-from typing import Optional, Sequence
+from typing import Optional
 
+import click
 from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
@@ -18,12 +16,9 @@ console = Console()
 
 def print_report(report: dict) -> None:
     """Pretty print ALL analysis results."""
-
-    # Format detection
     fmt = report.get("format", "unknown")
     rprint(f"[bold magenta]📋 Format:[/bold magenta] {fmt.upper()}")
 
-    # Log Levels (old format) OR Status Codes (Apache)
     if "levels" in report and report["levels"]:
         levels_table = Table(title="Log Levels")
         levels_table.add_column("Level", style="cyan")
@@ -40,7 +35,6 @@ def print_report(report: dict) -> None:
             status_table.add_row(str(code), str(count))
         console.print(status_table)
 
-    # Top IPs
     if report.get("ips"):
         ips_table = Table(title="Top IPs")
         ips_table.add_column("IP", style="green")
@@ -49,7 +43,6 @@ def print_report(report: dict) -> None:
             ips_table.add_row(ip, str(count))
         console.print(ips_table)
 
-    # Top Paths (NEW!)
     if report.get("top_paths"):
         paths_table = Table(title="Top Paths")
         paths_table.add_column("Path", style="blue")
@@ -58,7 +51,6 @@ def print_report(report: dict) -> None:
             paths_table.add_row(path, str(count))
         console.print(paths_table)
 
-    # Methods (NEW!)
     if report.get("methods"):
         methods_table = Table(title="HTTP Methods")
         methods_table.add_column("Method", style="bold magenta")
@@ -68,36 +60,26 @@ def print_report(report: dict) -> None:
         console.print(methods_table)
 
 
-def main(args: Optional[Sequence[str]] = None) -> None:
-    """Main CLI entry point.
-
-    Args:
-        args: Optional list of command line arguments. If None, uses sys.argv.
-    """
-    parser = argparse.ArgumentParser(description="🚀 Analyze server log files")
-    parser.add_argument("logfile", help="Path to log file")
-    parser.add_argument("--export", "-e", help="Export JSON to file")
-    parser.add_argument("--top-ips", "-t", type=int, default=10, help="Show top N IPs")
-
-    parsed_args = parser.parse_args(args)
-
-    if not Path(parsed_args.logfile).exists():
-        rprint(f"[red]Error:[/red] {parsed_args.logfile} not found")
-        sys.exit(1)
+@click.command(name="log-lens")
+@click.argument("logfile", type=click.Path(exists=True))
+@click.option("--export", "-e", help="Export JSON to file")
+@click.option("--top-ips", "-t", type=int, default=10, help="Show top N IPs")
+def main(logfile: str, export: Optional[str], top_ips: int) -> None:
+    """🚀 Analyze server log files"""
+    log_path = Path(logfile)
 
     log_parser = LogParser()
     line_count = 0
 
-    with open(parsed_args.logfile, "r") as f:
+    with open(log_path, "r") as f:
         for line in f:
             log_parser.parse_line(line.strip())
             line_count += 1
 
     result = log_parser.get_report()
 
-    rprint(f"[bold green]✅ Analyzed[/bold green] {parsed_args.logfile}: {line_count} lines")
+    rprint(f"[bold green]✅ Analyzed[/bold green] {logfile}: {line_count} lines")
 
-    # FIXED: Use 'result' not 'report'
     total_entries = sum(result.get("levels", {}).values()) + sum(
         result.get("status_codes", {}).values()
     )
@@ -105,9 +87,9 @@ def main(args: Optional[Sequence[str]] = None) -> None:
 
     print_report(result)
 
-    if parsed_args.export:
-        Path(parsed_args.export).write_text(json.dumps(result, indent=2))
-        rprint(f"[bold green]💾 Exported[/bold green] to {parsed_args.export}")
+    if export:
+        Path(export).write_text(json.dumps(result, indent=2))
+        rprint(f"[bold green]💾 Exported[/bold green] to {export}")
 
 
 if __name__ == "__main__":
