@@ -5,29 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.0] - 2023-08-31
 ### Added
-- **Comprehensive Documentation**:
-  - `PRE_COMMIT_CHECKLIST.md`: Step-by-step testing checklist before commits
-  - Enhanced `README.md`: Complete rewrite with usage examples, setup guide, troubleshooting
-  - Enhanced `CONTRIBUTING.md`: Detailed development workflow with commit message format
-- **Test Suite Improvements**:
-  - 11 passing tests with 95% code coverage
-  - CLI integration tests (basic help, missing logfile, analyze, export, flags, edge cases)
-  - Parser unit tests (basic parsing, IP extraction, no levels)
-  - Edge case tests (empty files, malformed logs, large values)
-- **Quality Metrics**:
-  - 100% coverage on `__init__.py` and `parser.py`
-  - 90% coverage on `cli.py`
+
+* Official support for Python 3.13 and 3.14 in project metadata and CI workflows.
 
 ### Changed
-- Improved documentation clarity and completeness
-- Enhanced CONTRIBUTING.md with 7-step development workflow
-- Added test coverage badges to README
+
+* Migrated the CLI framework from `argparse` to `Click` to improve command-line handling and testability.
+* Consolidated linting and formatting tools by moving to a `ruff`-only configuration, replacing standalone `black` and `isort` hooks to prevent formatting conflicts in CI.
+* Updated integration tests to utilize `click.testing.CliRunner` for more reliable command-line validation.
 
 ### Fixed
-- Fixed pre-commit hook configuration to pass all formatters
-- Resolved Black and isort formatting issues
+
+* Resolved `AttributeError: 'function' object has no attribute 'name'` errors in the test suite by correctly decorating the main entry point as a Click command.
+* Fixed `E501` line-length violations in test files by refactoring long log strings to stay within the 100-character limit.
+* Synchronized `poetry.lock` with `pyproject.toml` to resolve dependency environment mismatches during CI runs.
+
+
 
 ---
 
@@ -81,5 +76,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial unit tests
 
 ---
+## [Unreleased]
+### Added
+- **Comprehensive Documentation**:
+  - `PRE_COMMIT_CHECKLIST.md`: Step-by-step testing checklist before commits
+  - Enhanced `README.md`: Complete rewrite with usage examples, setup guide, troubleshooting
+  - Enhanced `CONTRIBUTING.md`: Detailed development workflow with commit message format
+- **Test Suite Improvements**:
+  - 11 passing tests with 95% code coverage
+  - CLI integration tests (basic help, missing logfile, analyze, export, flags, edge cases)
+  - Parser unit tests (basic parsing, IP extraction, no levels)
+  - Edge case tests (empty files, malformed logs, large values)
+- **Quality Metrics**:
+  - 100% coverage on `__init__.py` and `parser.py`
+  - 90% coverage on `cli.py`
+
+### Changed
+- Improved documentation clarity and completeness
+- Enhanced CONTRIBUTING.md with 7-step development workflow
+- Added test coverage badges to README
+
+### Fixed
+- Fixed pre-commit hook configuration to pass all formatters
+- Resolved Black and isort formatting issues
+
 
 **Follow [docs/ROADMAP.md](docs/roadmap.md) for v1.0 release!**
