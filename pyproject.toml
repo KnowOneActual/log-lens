@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "log-lens"
-version = "0.4.0"
+version = "0.7.0"
 description = "Lightweight CLI for analyzing Apache/Nginx server logs"
 authors = ["KnowOneActual"]
 readme = "README.md"
 license = "MIT"
+packages = [{include = "log_lens", from = "src"}]
 keywords = ["logs", "analysis", "cli", "server", "apache", "nginx"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -34,6 +35,7 @@ pylint = "^3.0.0"
 
 [tool.poetry.scripts]
 log-lens = "log_lens.cli:main"
+test = "pytest"
 
 [build-system]
 requires = ["poetry-core"]

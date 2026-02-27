@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-02-27
+### Added
+- **Modular Architecture**: Introduced `models/` and `core/` sub-packages for better code organization.
+- **Reporting Engine**: Extracted Rich CLI reporting into `src/log_lens/core/reporter.py`.
+- **Package Discovery**: Added `test` script shortcut to `pyproject.toml`.
+
+### Changed
+- **Project Layout**: Migrated to the modern `src/` layout (moved code to `src/log_lens/`).
+- **Improved Performance**: Optimized `LogParser` by persisting the `ApacheParser` instance across lines.
+
+### Fixed
+- **Data Loss Bug**: Fixed a critical issue where `ApacheParser` was re-initialized for every line, causing only the last line's data to be retained.
+- **Repository Cleanup**: Removed redundant `log_lens/` root directory and artifact files (`report.json`, `results.json`).
+
 ## [0.6.0] - 2023-08-31
 ### Added
 

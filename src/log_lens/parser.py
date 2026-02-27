@@ -2,20 +2,7 @@
 
 import re
 from collections import Counter
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Any, Dict, Optional
-
-
-@dataclass
-class LogEntry:
-    ip: str
-    timestamp: Optional[datetime]
-    method: str
-    path: str
-    status: int
-    size: int
-    user_agent: str
+from typing import Any, Dict
 
 
 class ApacheParser:
@@ -35,7 +22,8 @@ class ApacheParser:
         self.paths: Counter[str] = Counter()
         self.methods: Counter[str] = Counter()
 
-    def parse_line(self, line: str) -> None:
+    def parse_line(self, line: str) -> bool:
+        """Parse a line and return True if it matched Apache format."""
         match = self.APACHE_PATTERN.search(line)
         if match:
             data = match.groupdict()
@@ -49,6 +37,8 @@ class ApacheParser:
             self.paths[path] += 1
             self.methods[method] += 1
             self.entries["total"] += 1
+            return True
+        return False
 
     def get_report(self) -> Dict[str, Any]:
         return {
@@ -68,11 +58,17 @@ class LogParser:
         self.log_counts: Counter[str] = Counter()
         self.ip_counts: Counter[str] = Counter()
         self.format = "unknown"
-        self.parser: Optional[ApacheParser] = None
+        self.apache_parser = ApacheParser()
 
     def parse_line(self, line: str) -> None:
         # Backward compatibility + new Apache parsing
-        # Try log levels (old behavior)
+
+        # 1. Try Apache format first (more specific)
+        if self.apache_parser.parse_line(line):
+            self.format = "apache"
+            return
+
+        # 2. Fallback to generic log levels (old behavior)
         level_match = re.search(r"(INFO|WARN|WARNING|ERROR|CRITICAL|DEBUG)", line)
         if level_match:
             self.log_counts[level_match.group(1)] += 1
@@ -81,16 +77,10 @@ class LogParser:
         if ip_match:
             self.ip_counts[ip_match.group(0)] += 1
 
-        # Try Apache format
-        apache_parser = ApacheParser()
-        apache_parser.parse_line(line)
-        if apache_parser.entries:
-            self.format = "apache"
-            self.parser = apache_parser
-
     def get_report(self) -> Dict[str, Any]:
-        if self.parser is not None:
-            return self.parser.get_report()
+        if self.format == "apache":
+            return self.apache_parser.get_report()
+
         return {
             "format": self.format,
             "levels": dict(self.log_counts),
