@@ -49,6 +49,7 @@ class ApacheParser:
         return False
 
     def get_report(self) -> Dict[str, Any]:
+        """Generate a dictionary report of parsed Apache log data."""
         return {
             "format": "apache",
             "summary": dict(self.entries),
@@ -69,6 +70,7 @@ class LogParser:
         self.apache_parser = ApacheParser()
 
     def parse_line(self, line: str) -> None:
+        """Parse a single log line, detecting format and extracting data."""
         # Backward compatibility + new Apache parsing
 
         # 1. Try Apache format first (more specific)
@@ -86,6 +88,7 @@ class LogParser:
             self.ip_counts[ip_match.group(0)] += 1
 
     def get_report(self) -> Dict[str, Any]:
+        """Retrieve the final report from the underlying parser."""
         if self.format == "apache":
             return self.apache_parser.get_report()
 

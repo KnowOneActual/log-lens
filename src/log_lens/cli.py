@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Command Line Interface for Log Lens."""
+
 import json
 from pathlib import Path
 from typing import Optional
@@ -22,12 +24,18 @@ def main(logfile: str, export: Optional[str], top_ips: int) -> None:
     log_parser = LogParser()
     line_count = 0
 
-    with open(log_path, "r") as f:
+    with open(log_path, "r", encoding="utf-8") as f:
         for line in f:
             log_parser.parse_line(line.strip())
             line_count += 1
 
     result = log_parser.get_report()
+
+    # Apply top_ips filter to report results if applicable
+    if "ips" in result:
+        # Sort and slice to respect top_ips
+        sorted_ips = dict(sorted(result["ips"].items(), key=lambda x: x[1], reverse=True)[:top_ips])
+        result["ips"] = sorted_ips
 
     rprint(f"[bold green]✅ Analyzed[/bold green] {logfile}: {line_count} lines")
 
@@ -39,9 +47,9 @@ def main(logfile: str, export: Optional[str], top_ips: int) -> None:
     print_report(result)
 
     if export:
-        Path(export).write_text(json.dumps(result, indent=2))
+        Path(export).write_text(json.dumps(result, indent=2), encoding="utf-8")
         rprint(f"[bold green]💾 Exported[/bold green] to {export}")
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter
