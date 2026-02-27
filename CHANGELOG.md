@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Modular Architecture**: Introduced `models/` and `core/` sub-packages for better code organization.
 - **Reporting Engine**: Extracted Rich CLI reporting into `src/log_lens/core/reporter.py`.
-- **Package Discovery**: Added `test` script shortcut to `pyproject.toml`.
+- **Pydantic Integration**: Implemented `LogEntry` model using Pydantic for robust data validation and type casting (e.g., automated timestamp and size parsing).
 
 ### Changed
 - **Project Layout**: Migrated to the modern `src/` layout (moved code to `src/log_lens/`).

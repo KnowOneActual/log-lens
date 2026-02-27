@@ -24,6 +24,7 @@ python = "^3.9"
 rich = ">=13.0.0"
 click = ">=8.0.0"
 pyyaml = ">=6.0"
+pydantic = ">=2.0.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.8.0"
@@ -35,7 +36,6 @@ pylint = "^3.0.0"
 
 [tool.poetry.scripts]
 log-lens = "log_lens.cli:main"
-test = "pytest"
 
 [build-system]
 requires = ["poetry-core"]

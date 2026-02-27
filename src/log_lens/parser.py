@@ -4,6 +4,10 @@ import re
 from collections import Counter
 from typing import Any, Dict
 
+from pydantic import ValidationError
+
+from log_lens.models.log_entry import LogEntry
+
 
 class ApacheParser:
     """Parse Apache combined log format."""
@@ -27,17 +31,21 @@ class ApacheParser:
         match = self.APACHE_PATTERN.search(line)
         if match:
             data = match.groupdict()
-            ip = data["ip"]
-            status = int(data["status"])
-            path = data["path"]
-            method = data["method"]
+            try:
+                # Validate with Pydantic
+                entry = LogEntry(**data)
 
-            self.ips[ip] += 1
-            self.status_codes[status] += 1
-            self.paths[path] += 1
-            self.methods[method] += 1
-            self.entries["total"] += 1
-            return True
+                self.ips[entry.ip] += 1
+                self.status_codes[entry.status] += 1
+                self.paths[entry.path] += 1
+                self.methods[entry.method] += 1
+                self.entries["total"] += 1
+                return True
+            except ValidationError:
+                # If it matches the regex but fails Pydantic validation,
+                # we still return True but don't count it as a success for the whole file?
+                # Actually, let's just return False so it can try other parsers if needed.
+                return False
         return False
 
     def get_report(self) -> Dict[str, Any]:
