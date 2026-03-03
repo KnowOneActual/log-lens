@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "log-lens"
-version = "0.7.0"
+version = "0.7.1"
 description = "Lightweight CLI for analyzing Apache/Nginx server logs"
 authors = ["KnowOneActual"]
 readme = "README.md"
