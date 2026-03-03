@@ -5,7 +5,7 @@
 This guide covers how to set up your development environment and contribute to log-lens.
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.9+
 - Git
 - Poetry (for dependency management)
 
@@ -17,25 +17,14 @@ This guide covers how to set up your development environment and contribute to l
    cd log-lens
    ```
 
-2. **Install Poetry** (if not already installed):
-   ```bash
-   curl -sSL https://install.python-poetry.org | python3 -
-   ```
-
-3. **Install dependencies:**
+2. **Install dependencies:**
    ```bash
    poetry install
    ```
 
-4. **Activate virtual environment:**
+3. **Set up pre-commit hooks:**
    ```bash
-   poetry shell
-   # or use 'poetry run' prefix for individual commands
-   ```
-
-5. **Set up pre-commit hooks:**
-   ```bash
-   pre-commit install
+   poetry run pre-commit install
    ```
 
 ---
@@ -56,32 +45,21 @@ poetry run log-lens tests/fixtures/apache_access.log
 poetry run pytest
 
 # Run with coverage
-poetry run pytest --cov=src/log_lens tests/
-
-# Run specific test file
-poetry run pytest tests/test_parser.py
-
-# Run with verbose output
-poetry run pytest -v
+poetry run pytest --cov=log_lens tests/
 ```
 
 ### Code quality checks
 
 ```bash
-# Format code with Black
-poetry run black src/ tests/
-
-# Sort imports with isort
-poetry run isort src/ tests/
-
-# Lint with pylint
-poetry run pylint src/log_lens/
+# Lint and format with Ruff
+poetry run ruff check .
+poetry run ruff format .
 
 # Type check with mypy
 poetry run mypy src/log_lens/
 
 # Run all pre-commit hooks
-pre-commit run --all-files
+poetry run pre-commit run --all-files
 ```
 
 ---

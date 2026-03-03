@@ -1,6 +1,6 @@
 """Log Lens - Lightweight CLI for analyzing Apache/Nginx server logs."""
 
-__version__ = "0.4.0"
+__version__ = "0.7.1"
 __author__ = "KnowOneActual"
 __description__ = "Lightweight CLI for analyzing Apache/Nginx server logs"
 

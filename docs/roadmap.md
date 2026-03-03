@@ -2,72 +2,41 @@
 
 ## Project Overview
 
-**Log Lens** is a lightweight CLI for analyzing web server logs (Apache/Nginx). The project is currently in **early development** (v0.1.x) with core parsing and export features implemented. This roadmap outlines the path to v1.0 and beyond.
+**Log Lens** is a lightweight CLI for analyzing web server logs (Apache/Nginx). The project has matured significantly since its initial release, with core features now validated by a modular architecture and Pydantic models.
 
 ---
 
 ## Phase 1: MVP Polish (v0.1 → v0.2)
 **Goal:** Stabilize core features and improve reliability
-**Timeline:** 1–2 weeks
+**Status:** ✅ Completed (March 2026)
 
 ### Completed
-- ✅ Auto log format detection (Apache, generic)
-- ✅ Basic status code analysis
-- ✅ Top IPs and paths extraction
-- ✅ JSON export
-- ✅ Rich CLI output
-
-### In Progress / Todo
-- [ ] **Refactor parser module** for maintainability
-  - Extract regex patterns into configuration
-  - Add support for custom log formats (via config file)
-  - Improve error handling and edge cases
-- [ ] **Expand test coverage**
-  - Unit tests for parser (target: 90%+ coverage)
-  - Integration tests for CLI
-  - Fixtures with real log samples
-- [ ] **Nginx log format support**
-  - Add Nginx combined/common format detection
-  - Unit tests for Nginx parsing
-- [ ] **CLI improvements**
-  - Add `--help` examples with real use cases
-  - Verbose mode (`-v`) for debug output
-  - Progress indicator for large files
-- [ ] **Documentation**
-  - Inline code comments (docstrings)
-  - Architecture overview in `docs/ARCHITECTURE.md`
-  - Troubleshooting guide
+- ✅ **Refactor parser module**: Extracted logic and integrated with Pydantic.
+- ✅ **Expand test coverage**: Reached 95% test coverage for core modules.
+- ✅ **Improved CLI**: Enhanced reporting with Rich tables and Click integration.
+- ✅ **Documentation**: Finalized `ARCHITECTURE.md`, `DEVELOPMENT.md`, and added `GEMINI.md`.
 
 ---
 
-## Phase 2: Extended Analysis (v0.2 → v0.3)
+## Phase 2: Extended Analysis (v0.2 → v0.3+)
 **Goal:** Add deeper analytics and filtering
-**Timeline:** 2–3 weeks
+**Status:** 🟡 In Progress
 
-### Features
+### Completed
+- ✅ **Advanced analytics**: Status code distribution, IP counts, and top paths.
+- ✅ **Modular Reporter**: Separated terminal display logic into `reporter.py`.
+- ✅ **Type Safety**: Full migration to type hints and Mypy compliance.
+
+### In Progress / Todo
 - [ ] **Filtering and querying**
   - `--filter-ip` to exclude/include specific IPs
   - `--filter-status` to focus on specific HTTP codes
   - `--filter-path` for path-based queries
-  - Date/time range filtering
-- [ ] **Advanced analytics**
-  - Response time analysis (min/max/avg) if available in logs
-  - User-Agent grouping (e.g., bots vs browsers)
-  - Referrer analysis
-  - Request method distribution
-- [ ] **Time-based metrics**
-  - Requests per hour/minute breakdown
-  - Peak traffic times
-  - Hourly status code distribution
 - [ ] **Export enhancements**
-  - CSV export option
-  - HTML report generation (with charts)
-  - SQLite database export for deeper analysis
-
-### Tech Notes
-- Consider using `pandas` for time-series analysis (or keep lightweight)
-- Use `plotly` or similar for HTML chart generation
-- Maintain CLI-first design; optional interactive mode later
+  - Re-integrate JSON export for the new architecture.
+  - CSV export option.
+  - HTML report generation.
+- [ ] **Nginx-specific patterns**: While Apache combined format works for most Nginx logs, explicit Nginx patterns are planned for v0.8.0.
 
 ---
 
@@ -165,10 +134,10 @@ Maintained at each phase:
 
 | Version | Target Date | Status |
 |---------|-------------|--------|
-| v0.1.0  | Dec 2025    | Initial release (current) |
-| v0.2.0  | Jan 2026    | Extended analysis |
-| v0.3.0  | Feb 2026    | Web dashboard |
-| v0.4.0  | Mar 2026    | Advanced features |
+| v0.1.0  | Dec 2025    | Initial release |
+| v0.4.0  | Dec 2025    | Performance & CI |
+| v0.6.0  | Feb 2026    | Click & Ruff migration |
+| v0.7.1  | Mar 2026    | Current Stable |
 | v1.0.0  | Apr 2026    | Production-ready |
 
 ---

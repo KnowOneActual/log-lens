@@ -7,7 +7,7 @@ Thank you for considering contributing! We welcome contributions of all kinds.  
 ## 🎣 Getting Started
 
 ### Prerequisites
-- Python 3.12+
+- Python 3.9+
 - Poetry (package manager)
 - Git
 - GitHub account (for forking)
@@ -23,10 +23,7 @@ cd log-lens
 ### 2. Install Development Environment
 
 ```bash
-# Install package in editable mode with dev dependencies
-pip install -e '.[dev]'
-
-# Or with Poetry:
+# Install with Poetry:
 poetry install
 ```
 
@@ -54,17 +51,14 @@ git checkout -b fix/issue-name
 
 ### Step 2: Make Your Changes
 
-Edit files in `log_lens/` and `tests/`:
+Edit files in `src/log_lens/` and `tests/`:
 
 ```
-log_lens/
-├── __init__.py      # Package initialization
-├── cli.py           # CLI entry point (commands, arguments, output)
-└── parser.py        # Log parsing logic (format detection, extraction)
-
-tests/
-├── test_cli.py      # CLI tests
-└── test_parser.py   # Parser tests
+src/log_lens/
+├── core/            # Analytics and reporting
+├── models/          # Pydantic data models
+├── cli.py           # CLI entry point (Click commands)
+└── parser.py        # Log parsing logic
 ```
 
 ### Step 3: Write Tests
@@ -73,13 +67,10 @@ tests/
 
 ```bash
 # Run tests
-poetry run pytest tests/ -v
+poetry run pytest
 
 # Run with coverage
-poetry run pytest tests/ -v --cov=log_lens
-
-# Run specific test
-poetry run pytest tests/test_cli.py::TestCliIntegration::test_cli_basic_help -v
+poetry run pytest --cov=log_lens tests/
 ```
 
 **Test requirements:**
@@ -248,40 +239,25 @@ poetry run pytest tests/ -k "test_cli_" -v
 ### Code Quality
 
 ```bash
-# Format with Black
-poetry run black log_lens/ tests/
+# Lint and format with Ruff
+poetry run ruff check .
+poetry run ruff format .
 
-# Sort imports with isort
-poetry run isort log_lens/ tests/
-
-# Lint with Ruff
-poetry run ruff check log_lens/ tests/
-
-# Fix linting issues
-poetry run ruff check --fix log_lens/ tests/
+# Type checking
+poetry run mypy src/log_lens/
 
 # Run ALL checks
 poetry run pre-commit run --all-files
-
-# Type checking (optional)
-poetry run mypy log_lens/
-
-# Security scan (optional)
-poetry run bandit -r log_lens/
 ```
 
 ### Manual Testing
 
 ```bash
 # Test on sample log
-log-lens tests/fixtures/sample_apache.log
+log-lens tests/fixtures/apache_access.log
 
 # Test JSON export
-log-lens tests/fixtures/sample_apache.log -e test_report.json
-cat test_report.json
-
-# Test different flags
-log-lens tests/fixtures/sample_apache.log --top-ips 3
+log-lens tests/fixtures/apache_access.log -e test_report.json
 ```
 
 ---

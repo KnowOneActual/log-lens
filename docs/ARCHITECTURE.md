@@ -7,44 +7,25 @@ log-lens/
 ├── src/log_lens/
 │   ├── __init__.py              # Package initialization
 │   ├── cli.py                  # Click CLI entry point
-│   ├── main.py                 # Main orchestration logic
-│   ├── parser.py               # Log parsing and format detection
-│   ├── exporter.py             # JSON/CSV export functionality
-│   ├── models/                 # Data models (Pydantic)
-│   │   ├── __init__.py
-│   │   ├── log_entry.py            # LogEntry dataclass
-│   │   ├── analysis.py             # Analysis result models
-│   │   └── config.py               # Configuration models
+│   ├── parser.py               # Log parsing with Pydantic validation
 │   ├── core/                   # Core analytics engine
 │   │   ├── __init__.py
-│   │   ├── analyzer.py             # Analysis orchestration
-│   │   ├── filters.py              # Filtering logic
-│   │   └── stats.py                # Statistical aggregation
-│   ├── utils/                  # Utility functions
+│   │   └── reporter.py             # Rich terminal reporting
+│   ├── models/                 # Data models (Pydantic)
 │   │   ├── __init__.py
-│   │   ├── logging.py              # Logging configuration
-│   │   └── validators.py           # Input validation
-│   ├── config/                 # Configuration files
-│   │   ├── __init__.py
-│   │   ├── patterns.yaml           # Regex patterns for log formats
-│   │   └── defaults.yaml           # Default configuration
-│   ├── api/                    # (Future) FastAPI backend
-│   └── web/                    # (Future) Vue.js frontend
+│   │   └── log_entry.py            # LogEntry Pydantic model
+│   └── config/                 # (Future) Configuration files
 ├── tests/
 │   ├── __init__.py
 │   ├── fixtures/               # Test data and log samples
-│   │   ├── apache_access.log
-│   │   ├── nginx_combined.log
-│   │   └── generic.log
 │   ├── test_parser.py          # Parser unit tests
-│   ├── test_cli.py             # CLI integration tests
-│   ├── test_analyzer.py        # Analytics engine tests
-│   └── test_exporter.py        # Export functionality tests
+│   └── test_cli.py             # CLI integration tests
 ├── docs/
 │   ├─┐ ARCHITECTURE.md         # This file
-│   ├── ROADMAP.md
-│   └── examples/               # Usage examples
+│   ├── roadmap.md
+│   └── PROJECT_SUMMARY.md
 ├── pyproject.toml          # Poetry configuration
+├── GEMINI.md               # AI context and standards (local-only)
 ├── README.md               # Project overview
 ├── CONTRIBUTING.md         # Contribution guidelines
 ├── CHANGELOG.md            # Version history
@@ -60,29 +41,16 @@ User Input (CLI)
      │
      │ └─ cli.py (Click entry point)
      │
-     │ └─ main.py (load file)
+     v
+  parser.py (LogParser / ApacheParser)
+     │
+     └─ Validates line with LogEntry Pydantic model
+     └─ Aggregates statistics into Counters
      │
      v
-  parser.py (detect format + parse)
+  core/reporter.py (Rich terminal output)
      │
-     └─ Regex matching against patterns
-     └─ Yield LogEntry objects
-     └─ Handle errors gracefully
-     │
-     v
-  core/analyzer.py (aggregate statistics)
-     │
-     └─ core/stats.py (count, aggregate)
-     └─ core/filters.py (apply user filters)
-     │
-     v
-  models/analysis.py (AnalysisResult)
-     │
-     v
-  exporter.py or CLI display
-     │
-     └─ JSON export
-     └─ Rich CLI tables
+     └─ Formats report into tables
      │
      v
   Output to user
@@ -94,92 +62,47 @@ User Input (CLI)
 
 ### 1. **parser.py** - Log Parsing Engine
 
-**Responsibility:** Auto-detect log format and parse entries
+**Responsibility:** Auto-detect log format and parse entries with validation.
+
+**Key components:**
+- `ApacheParser`: Specifically handles Apache Combined log format using regex and Pydantic validation.
+- `LogParser`: Main entry point that orchestrates format detection and fallback to generic log parsing.
+
+### 2. **core/reporter.py** - Reporting Engine
+
+**Responsibility:** Format and display analysis results.
 
 **Key functions:**
-```python
-def detect_format(file_path: Path) -> str:
-    """Auto-detect log format (apache, nginx, generic)"""
-    # Read first N lines and match against patterns
-    pass
+- `render_report`: Uses the `Rich` library to display summary statistics, top IPs, status codes, and paths in a readable terminal format.
 
-def parse_log(file_path: Path, format_hint: Optional[str] = None) -> Iterator[LogEntry]:
-    """Parse log file yielding LogEntry objects"""
-    # Lazy evaluation: process line-by-line
-    pass
+### 3. **models/log_entry.py** - Data Validation
 
-def extract_line(line: str, pattern: str) -> Optional[LogEntry]:
-    """Extract structured data from single line"""
-    # Use regex to parse
-    pass
-```
+**Responsibility:** Define structured data and enforce type safety.
 
-**Supported formats (v0.2+):**
-- Apache Combined Log Format
-- Apache Common Log Format
-- Nginx Combined Format
-- Nginx Common Format
-- Generic/Custom format (configurable)
+**Key model:**
+- `LogEntry`: A Pydantic model that validates IPs, status codes (as integers), and request details.
 
 ---
 
-### 2. **core/analyzer.py** - Analysis Engine
-
-**Responsibility:** Aggregate statistics and apply transformations
-
-**Key functions:**
-```python
-def analyze(entries: Iterator[LogEntry], config: AnalysisConfig) -> AnalysisResult:
-    """Run analysis pass over log entries"""
-    # 1. Apply filters (IP, status, path, time range)
-    # 2. Aggregate statistics
-    # 3. Return AnalysisResult
-    pass
-
-def count_by_key(entries: Iterator[LogEntry], key: str) -> Dict[str, int]:
-    """Count occurrences by key (ip, status, path, method)"""
-    pass
-
-def get_top_n(counts: Dict[str, int], n: int) -> Dict[str, int]:
-    """Get top N entries by count"""
-    pass
-```
-
-**Output:** `AnalysisResult` object containing:
-- Total entries processed
-- Detected format
-- Status code distribution
-- Top IPs (with counts)
-- Top paths (with counts)
-- HTTP method breakdown
-- Timestamps (earliest, latest)
+## Supported Formats (v0.7.1)
+- **Apache Combined Log Format** (Fully supported with Pydantic validation)
+- **Generic/Fallback format** (Supports basic level and IP extraction)
+- **Nginx Combined Format** (Supported via Apache patterns)
 
 ---
 
-### 3. **exporter.py** - Output Formatting
+## Design Principles
 
-**Responsibility:** Export analysis results in various formats
+1. **Lazy Evaluation**
+   - Process logs line-by-line using generators or incremental parsing.
+   - Minimal memory footprint for large files.
 
-**Supported formats:**
-- JSON (v0.1+)
-- Rich CLI tables (v0.1+)
-- CSV (v0.3+)
-- HTML reports (v0.3+)
+2. **Type-Safe Validation**
+   - Leverage Pydantic for automated data conversion and validation.
+   - Ensure reliable analysis by catching malformed data early.
 
-**Key functions:**
-```python
-def export_json(result: AnalysisResult, output_path: Path) -> None:
-    """Export AnalysisResult as JSON"""
-    pass
-
-def export_csv(result: AnalysisResult, output_path: Path) -> None:
-    """Export as CSV (v0.3+)"""
-    pass
-
-def render_tables(result: AnalysisResult) -> None:
-    """Display Rich-formatted tables in terminal"""
-    pass
-```
+3. **Rich Visual Feedback**
+   - Terminal-first design with interactive tables and formatted output.
 
 ---
 

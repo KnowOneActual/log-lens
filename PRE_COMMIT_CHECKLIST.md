@@ -29,8 +29,6 @@ poetry run pre-commit run --all-files
 ```
 
 This runs ALL formatters & linters:
-- **Black** - Code formatting
-- **isort** - Import sorting
 - **Ruff** - Linting & formatting
 - **ruff-format** - Additional formatting
 
@@ -69,11 +67,8 @@ log-lens sample_access.log --top-ips 5
 ## 📝 Step 4: Verify Code Quality
 
 ```bash
-# Type checking (if enabled)
-poetry run mypy log_lens/
-
-# Security scanning (optional)
-poetry run bandit -r log_lens/
+# Type checking
+poetry run mypy src/log_lens/
 ```
 
 ---
@@ -163,9 +158,8 @@ poetry run pytest tests/ --cov=log_lens --cov-report=html
 poetry run pre-commit run --all-files --verbose
 
 # Fix manually or auto-fix
-poetry run black log_lens/
-poetry run isort log_lens/
-poetry run ruff check --fix log_lens/
+poetry run ruff check --fix .
+poetry run ruff format .
 ```
 
 ---

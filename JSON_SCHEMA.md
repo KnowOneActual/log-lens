@@ -2,7 +2,7 @@
 
 The `--export` flag outputs structured JSON for dashboards, alerting, or further processing.
 
-## Schema v0.3.0
+## Schema v0.7.1
 
 ```json
 {
@@ -13,10 +13,6 @@ The `--export` flag outputs structured JSON for dashboards, alerting, or further
   "ips": {
     "192.168.1.1": 156,
     "10.0.0.15": 89
-  },
-  "levels": {
-    "INFO": 892,
-    "ERROR": 45
   },
   "status_codes": {
     "200": 892,
