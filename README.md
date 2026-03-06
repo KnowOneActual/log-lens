@@ -174,7 +174,7 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 Made with ❤️ using:
 - [Rich](https://rich.readthedocs.io/) - Beautiful terminal output
-- [Black](https://black.readthedocs.io/) - Code formatting
+- [Ruff](https://docs.astral.sh/ruff/linter/) - Code formatting
 - [pre-commit](https://pre-commit.com/) - Git hooks
 - [pytest](https://pytest.org/) - Testing framework
 
